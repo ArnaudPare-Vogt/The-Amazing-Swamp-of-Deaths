@@ -2,15 +2,15 @@ package abcd3901.main;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import abcd3901.graphics.Renderer;
+import abcd3901.graphics.Sprite;
+import abcd3901.graphics.SpriteSheet;
 import abcd3901.utility.exception.ExceptionLog;
-import abcd3901.utility.math.Matrix;
 import abcd3901.utility.math.PerlinNoise;
 
 /**
@@ -39,6 +39,8 @@ public class Component extends JPanel implements Runnable{
 	
 	//tepm stuff
 	PerlinNoise pn1 = new PerlinNoise(40,20, 100, new Random(),0.5,4);
+	String path1 = "/graphics/spriteSheet/SpriteSheet1.png";
+	SpriteSheet ss = new SpriteSheet(path1, 128);
 	
 	public Component(){
 		this.setPreferredSize(size);
@@ -86,7 +88,6 @@ public class Component extends JPanel implements Runnable{
 			renderer.drawPixel(i, (int)pn1.getValue(i/(double)pn1.getWavelength())+50, 0x33ffff);
 		}
 		
-		renderer.drawPixel(10, 10, 0xffff00);
 		g.drawImage(renderer.getImage(), 0, 0, size.width*pixelSize,size.height*pixelSize,null);
 	}
 	
