@@ -2,16 +2,15 @@ package abcd3901.main;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import abcd3901.game.gamemode.GameMode;
+import abcd3901.game.gamemode.PlayMode;
 import abcd3901.graphics.Renderer;
-import abcd3901.graphics.Sprite;
-import abcd3901.graphics.SpriteSheet;
+import abcd3901.io.UserInput;
 import abcd3901.utility.exception.ExceptionLog;
-import abcd3901.utility.math.PerlinNoise;
 
 /**
  * The main class.
@@ -36,16 +35,17 @@ public class Component extends JPanel implements Runnable{
 	//graphics stuff
 	private Renderer renderer;
 	
+	//control stuff
+	UserInput in;
 	
 	//tepm stuff
-	PerlinNoise pn1 = new PerlinNoise(40,20, 100, new Random(),0.5,4);
-	String path1 = "/graphics/spriteSheet/SpriteSheet1.png";
-	SpriteSheet ss = new SpriteSheet(path1, 128);
+	GameMode m = new PlayMode(800, 600);
 	
-	public Component(){
+	public Component(JFrame parent){
 		this.setPreferredSize(size);
 		initGraphics();
 		initThread();
+		initInput(parent);
 	}
 	
 	private void initGraphics(){
@@ -54,6 +54,11 @@ public class Component extends JPanel implements Runnable{
 	
 	private void initThread(){
 		gameLoop = new Thread(this,"TASOD_mainGameLoop");
+	}
+	
+	private void initInput(JFrame parent){
+		in = new UserInput();
+		parent.addKeyListener(in);
 	}
 	
 	public void start(){
@@ -71,6 +76,7 @@ public class Component extends JPanel implements Runnable{
 			try {
 				Thread.sleep((int)(1000/fps));
 				//update
+				update();
 				
 				//render
 				repaint();
@@ -81,19 +87,20 @@ public class Component extends JPanel implements Runnable{
 		}
 	}
 	
+	private void update(){
+		m.update(in);
+	}
+	
 	@Override
 	public void paintComponent(Graphics g){
 		renderer.clearImage();
-		for (int i = 0; i < pn1.getWidth(); i++) {
-			renderer.drawPixel(i, (int)pn1.getValue(i/(double)pn1.getWavelength())+50, 0x33ffff);
-		}
-		
+		m.render(renderer);
 		g.drawImage(renderer.getImage(), 0, 0, size.width*pixelSize,size.height*pixelSize,null);
 	}
 	
 	public static void main(String[] args){
-		Component component = new Component();
 		JFrame frame = new JFrame();
+		Component component = new Component(frame);
 		
 		frame.add(component);
 		frame.pack();
