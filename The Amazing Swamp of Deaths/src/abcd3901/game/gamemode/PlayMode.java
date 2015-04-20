@@ -33,6 +33,9 @@ public class PlayMode extends GameMode{
 		if(in.getKey(KeyEvent.VK_S))y++;
 		if(in.getKey(KeyEvent.VK_A))x--;
 		if(in.getKey(KeyEvent.VK_D))x++;
+		
+		this.x += in.getMouseDeltaDragged().width;
+		this.y += in.getMouseDeltaDragged().height;
 	}
 
 }

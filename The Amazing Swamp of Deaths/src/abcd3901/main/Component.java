@@ -59,6 +59,7 @@ public class Component extends JPanel implements Runnable{
 	private void initInput(JFrame parent){
 		in = new UserInput();
 		parent.addKeyListener(in);
+		this.addMouseMotionListener(in);
 	}
 	
 	public void start(){
@@ -89,6 +90,7 @@ public class Component extends JPanel implements Runnable{
 	
 	private void update(){
 		m.update(in);
+		in.clear();
 	}
 	
 	@Override
