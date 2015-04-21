@@ -11,6 +11,14 @@ public class Sprite {
 		data = ss.cut(xPos, yPos, xSize, ySize);
 	}
 	
+	private Sprite(Sprite source){
+		for (int i = 0; i < data.length; i++) {
+			this.data[i] = source.data[i];
+		}
+		this.width = source.width;
+		this.height = source.height;
+	}
+	
 	public int getPixel(int x,int y){
 		if(x<0||y<0||x>=width||y>=height){
 			throw new IllegalArgumentException("The pixel has to be between the boundries of the sprite");
@@ -24,5 +32,16 @@ public class Sprite {
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	public Sprite darken(double alphaPercentage){
+		Sprite result = new Sprite(this);
+		
+		int[] pix = result.data;
+		for (int i = 0; i < pix.length; i++) {
+			int col = pix[i];
+		}
+		
+		return result;
 	}
 }
