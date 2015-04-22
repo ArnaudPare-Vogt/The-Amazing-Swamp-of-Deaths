@@ -1,19 +1,18 @@
 package abcd3901.game.gamemode;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 
+import abcd3901.game.environement.Map;
 import abcd3901.graphics.Renderer;
-import abcd3901.graphics.Sprite;
-import abcd3901.graphics.SpriteSheet;
 import abcd3901.io.UserInput;
 
 public class PlayMode extends GameMode{
 
 	private int x,y,width,height;
 	
-	String path1 = "/graphics/spriteSheet/SpriteSheet1.png";
-	SpriteSheet ss = new SpriteSheet(path1, 128);
-	Sprite s = new Sprite(ss,0,0,16,16);
+	private Map lvl01 = new Map(new Dimension(1000,1000));
 	
 	public PlayMode(int width,int height){
 		this.height=height;
@@ -24,7 +23,7 @@ public class PlayMode extends GameMode{
 	
 	@Override
 	public void render(Renderer ren) {
-		ren.drawSprite(x, y, s);
+		lvl01.render(ren, new Point(x,y), new Dimension(width,height));
 	}
 
 	@Override

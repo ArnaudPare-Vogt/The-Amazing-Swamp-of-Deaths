@@ -9,6 +9,10 @@ import abcd3901.graphics.Sprite;
  */
 public class Tile {
 	
+	public static final int TILE_SIZE = 16;
+	
+	public static Tile baseTile = new Tile(Sprite.base_water);
+	
 	
 	Sprite sprite;
 	

@@ -2,6 +2,10 @@ package abcd3901.graphics;
 
 public class Sprite {
 
+	public static Sprite base_water = new Sprite(SpriteSheet.baseSheet,0,0,16,16);
+	
+	
+	
 	private int[] data;
 	private int width,height;
 	
@@ -39,7 +43,7 @@ public class Sprite {
 		
 		int[] pix = result.data;
 		for (int i = 0; i < pix.length; i++) {
-			int col = pix[i];
+			pix[i] = GraphicUtility.alphaBlend(((int)alphaPercentage*0xff)<<24, pix[i]);
 		}
 		
 		return result;
