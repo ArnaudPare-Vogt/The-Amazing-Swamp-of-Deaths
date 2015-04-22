@@ -24,7 +24,7 @@ public class Renderer {
 	
 	public void drawPixel(int x, int y, int color){
 		if(x>=0 && y>=0 && x<width && y<height){
-			pixels[x+y*width] = color;
+			pixels[x+y*width] = GraphicUtility.alphaBlend(color,pixels[x+y*width]);
 		}else{
 			System.out.println("Wrong pixels data! coords :"+x+","+y+"in a square of "+width+","+height);
 		}
