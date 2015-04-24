@@ -12,7 +12,7 @@ public class PlayMode extends GameMode{
 
 	private int x,y,width,height;
 	
-	private Map lvl01 = new Map(new Dimension(1000,1000));
+	private Map lvl01 = new Map(new Dimension(10,10));
 	
 	public PlayMode(int width,int height){
 		this.height=height;
@@ -23,7 +23,7 @@ public class PlayMode extends GameMode{
 	
 	@Override
 	public void render(Renderer ren) {
-		lvl01.render(ren, new Point(x,y), new Dimension(width,height));
+		lvl01.render(ren, new Point(-x,-y), new Dimension(width,height));
 	}
 
 	@Override
