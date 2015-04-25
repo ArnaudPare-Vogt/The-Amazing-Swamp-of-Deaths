@@ -3,6 +3,7 @@ package abcd3901.game.environement;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import abcd3901.game.environement.generation.MapFactory;
 import abcd3901.graphics.Renderer;
 
 /**
@@ -19,13 +20,10 @@ public class Map {
 	public Map(Dimension size){
 		this.size = size;
 		terrainData = new Tile[size.height*size.width];
-		generateBaseTerrain();
-	}
-	
-	private void generateBaseTerrain(){
-		for (int i = 0; i < terrainData.length; i++) {
-			terrainData[i] = Tile.baseWater;
-		}
+		
+		MapFactory mf = new MapFactory(System.nanoTime());
+		terrainData = mf.getTerrainLinear(size.width, size.height);
+		
 	}
 	
 	public void render(Renderer ren,Point coordinate,Dimension view){

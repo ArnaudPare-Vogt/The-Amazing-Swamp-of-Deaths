@@ -3,7 +3,7 @@ package abcd3901.graphics;
 public class Sprite {
 
 	public static Sprite base_water = new Sprite(SpriteSheet.baseSheet,0,0,16,16);
-	
+	public static Sprite base_island = new Sprite(SpriteSheet.baseSheet,16,0,16,16);
 	
 	
 	private int[] data;
