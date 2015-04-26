@@ -2,8 +2,11 @@ package abcd3901.graphics;
 
 public class Sprite {
 
+	public static final String ERROR_MESSAGE_WRONG_SPRITESHEET_SIZE = "The sprite sheet has the size of %s, it should be ";
+	
 	public static Sprite base_water = new Sprite(SpriteSheet.baseSheet,0,0,16,16);
 	public static Sprite base_island = new Sprite(SpriteSheet.baseSheet,16,0,16,16);
+	
 	
 	
 	private int[] data;
@@ -48,4 +51,20 @@ public class Sprite {
 		
 		return result;
 	}
+	
+	public Sprite[] getConnectedTexturesBase(SpriteSheet ss,int res){
+		if(ss.getSize() != 8*res){
+			throw new IllegalArgumentException(ERROR_MESSAGE_WRONG_SPRITESHEET_SIZE.replace("%s", ""+ss.getSize()) + 8*res);
+		}
+		
+		Sprite[] baseTiles = new Sprite[13];
+		for (int i = 0; i < baseTiles.length; i++) {
+			int x = i%8;
+			int y = i/8;
+			baseTiles[i] = new Sprite(ss, x*res, y*res*4, res, res);
+		}
+		
+		return baseTiles;
+	}
+	
 }

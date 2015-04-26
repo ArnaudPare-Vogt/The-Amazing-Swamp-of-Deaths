@@ -26,6 +26,14 @@ public class SpriteSheet {
 	}
 	
 	/**
+	 * Gets the size of the current sprite sheet
+	 * @return the size of the spriteSheet (that is the width and/or height)
+	 */
+	public int getSize() {
+		return size;
+	}
+	
+	/**
 	 * Used by the constructor to load an image
 	 * @param path the path of the image
 	 */
