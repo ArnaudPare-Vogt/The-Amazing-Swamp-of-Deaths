@@ -23,4 +23,8 @@ public class Tile {
 	public Sprite getSprite(){
 		return sprite;
 	}
+	
+	public Sprite getSprite(Tile[] adjacentTiles){
+		return sprite;
+	}
 }
