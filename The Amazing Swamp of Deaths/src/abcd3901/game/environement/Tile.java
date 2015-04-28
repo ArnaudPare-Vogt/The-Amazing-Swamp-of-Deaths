@@ -1,6 +1,6 @@
 package abcd3901.game.environement;
 
-import abcd3901.graphics.Sprite;
+import abcd3901.graphics.sprite.Sprite;
 
 /**
  * A simplistic representation of a chunk of terrain

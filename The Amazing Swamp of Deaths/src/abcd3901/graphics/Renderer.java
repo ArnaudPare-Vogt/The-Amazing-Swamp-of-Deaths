@@ -3,6 +3,8 @@ package abcd3901.graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import abcd3901.graphics.sprite.Sprite;
+
 public class Renderer {
 	
 	private BufferedImage image;
@@ -37,7 +39,7 @@ public class Renderer {
 	public void drawSprite(int x,int y,Sprite s){
 		for (int i = 0; i < s.getWidth(); i++) {
 			for (int j = 0; j < s.getHeight(); j++) {
-				drawPixel((i+x),(y+j),s.getPixel(i, j));
+				drawPixel((i+x),(y+j),s.getSprite().getPixel(i, j));
 			}
 		}
 	}
