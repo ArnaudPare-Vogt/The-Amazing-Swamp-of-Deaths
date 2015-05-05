@@ -29,10 +29,9 @@ public class Map {
 	public void render(Renderer ren,Point coordinate,Dimension view){
 		for (int i = 0; i < view.width/Tile.TILE_SIZE; i++) {
 			for (int j = 0; j < view.height/Tile.TILE_SIZE; j++) {
-				
 				Point p = findTileOnPoint(new Point(i*Tile.TILE_SIZE + coordinate.x,j*Tile.TILE_SIZE+coordinate.y));
 				if(p!=null){
-					ren.drawSprite(i*Tile.TILE_SIZE, j*Tile.TILE_SIZE, terrainData[p.x + p.y*size.width].getSprite());
+					ren.drawSprite(i*Tile.TILE_SIZE, j*Tile.TILE_SIZE, terrainData[p.x + p.y*size.width].getSprite(getAdjacentTiles(p)));
 				}
 			}
 		}

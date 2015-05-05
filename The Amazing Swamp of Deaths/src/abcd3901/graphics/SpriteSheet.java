@@ -57,7 +57,7 @@ public class SpriteSheet {
 	 * @return an array of integers ARGB pixels representing the current zone. The pixels are ordered by columns (the first pixel id (0,0), the .
 	 */
 	public int[] cut(int x,int y, int width,int height){
-		if(x<0||y<0||x+width>=size||y+height>=size)
+		if(x<0||y<0||x+width>size||y+height>size)
 			throw new IllegalArgumentException("The given bounds have to be within the spriteSheet");
 		int[] data = new int[width*height];
 		for (int i = 0; i < width; i++) {

@@ -6,7 +6,7 @@ import abcd3901.graphics.SpriteSheet;
 public class Sprite {
 	
 	public static Sprite base_water = new Sprite(SpriteSheet.baseSheet,0,0,16,16);
-	public static Sprite base_island = new Sprite(SpriteSheet.baseSheet,16,0,16,16);
+	public static MetaSprite base_island = SpriteFactory.getConnectectedTextures(SpriteSheet.baseSheet, 16);
 	
 	
 	
@@ -17,9 +17,13 @@ public class Sprite {
 		width = xSize;
 		height = ySize;
 		data = ss.cut(xPos, yPos, xSize, ySize);
+		if(data==null){
+			System.out.println("Whoooa!");
+		}
 	}
 	
 	protected Sprite(Sprite source){
+		data = new int[source.data.length];
 		for (int i = 0; i < data.length; i++) {
 			this.data[i] = source.data[i];
 		}
@@ -61,4 +65,37 @@ public class Sprite {
 		return result;
 	}
 	
+	/**
+	 * rotates this sprite 90 degrees counter-clockwise (PI/2 rad)
+	 */
+	public void rotateLeft(){
+		int[] dataOld = new int[data.length];
+		for (int i = 0; i < dataOld.length; i++) {
+			dataOld[i] = data[i];
+		}
+		
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				int rx = width-1-x;
+				data[(y) + (rx) * width] = dataOld[x+y*width];
+			}
+		}
+	}
+	
+	/**
+	 * Flips this sprite on the x axis.
+	 */
+	public void flipHorizontally(){
+		int[] dataOld = new int[data.length];
+		for (int i = 0; i < dataOld.length; i++) {
+			dataOld[i] = data[i];
+		}
+		
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				data[x + (height-1 - y) * width] = dataOld[x+y*width];
+			}
+		}
+	}
+
 }
