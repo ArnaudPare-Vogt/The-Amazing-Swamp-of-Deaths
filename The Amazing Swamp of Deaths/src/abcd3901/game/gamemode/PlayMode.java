@@ -12,7 +12,7 @@ public class PlayMode extends GameMode{
 
 	private int x,y,width,height;
 	
-	private Map lvl01 = new Map(new Dimension(10,10));
+	private Map lvl01 = new Map(new Dimension(200,200));
 	
 	public PlayMode(int width,int height){
 		this.height=height;

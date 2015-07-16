@@ -10,22 +10,36 @@ import abcd3901.utility.math.ArrayUtil;
  */
 public class SpriteFactory {
 
-	private static int[] duplicationOrder = {3,1,0,9};
+	private static int[] duplicationOrder = {3,1,0,9,1};
 	private static final String GENERATION_ERROR = "The generation has failed";
 	
 	
 	public static MetaSprite getConnectectedTextures(SpriteSheet ss,int res){
 		Sprite[] sp = getConnectedTexturesBase(ss,res);
-		Sprite[] sprites = new Sprite[41];
+		Sprite[] sprites = new Sprite[49];
 		if(sp.length == ArrayUtil.intArraySum(duplicationOrder)){
 			int index = 0;
 			for (int i = 0; i < duplicationOrder.length; i++) {
 				for (int j = 0; j < duplicationOrder[i]; j++) {
 					Sprite s = new Sprite(sp[(ArrayUtil.intArraySumUntil(duplicationOrder, i))+j]);
-					for (int k = 0; k < i+1; k++) {
-						sprites[index] = new Sprite(s);
-						s.rotateLeft();
-						index++;
+					if(i==4){
+						for (int k = 0; k < 4; k++) {
+							sprites[index] = new Sprite(s);
+							s.rotateLeft();
+							index++;
+						}
+						s.flipHorizontally();
+						for (int k = 0; k < 4; k++) {
+							sprites[index] = new Sprite(s);
+							s.rotateLeft();
+							index++;
+						}
+					}else{
+						for (int k = 0; k < i+1; k++) {
+							sprites[index] = new Sprite(s);
+							s.rotateLeft();
+							index++;
+						}
 					}
 				}
 			}
