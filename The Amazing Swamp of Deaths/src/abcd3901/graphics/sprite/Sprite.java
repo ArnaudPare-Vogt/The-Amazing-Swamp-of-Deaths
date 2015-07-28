@@ -8,11 +8,23 @@ public class Sprite {
 	public static Sprite base_water = new Sprite(SpriteSheet.baseSheet,0,0,16,16);
 	public static MetaSprite base_island = SpriteFactory.getConnectectedTextures(SpriteSheet.baseSheet, 16);
 	
-	
+	public static final Sprite baseSelector = new Sprite(SpriteSheet.mainRandomSprites,32,0,16,16);
 	
 	private int[] data;
 	private int width,height;
 	
+	/**
+	 * Creates a new Sprite from the given SpriteSheet. The constructor
+	 * makes use  of the method cut of SpriteSheet.
+	 * 
+	 * @see abcd3901.graphics.SpriteSheet#cut(int, int, int, int)
+	 * 
+	 * @param ss the SpriteSheet that contains the sprite
+	 * @param xPos the x position of the sprite in the SpriteSheet (in pixels)
+	 * @param yPos the y position of the sprite in the SpriteSheet (in pixels)
+	 * @param xSize the width of the sprite (in pixels)
+	 * @param ySize the height of the sprite (in pixels
+	 */
 	public Sprite(SpriteSheet ss, int xPos,int yPos,int xSize,int ySize){
 		width = xSize;
 		height = ySize;

@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.ObjectInputStream.GetField;
 
 public class UserInput implements KeyListener,MouseListener,MouseMotionListener{
 
@@ -15,6 +16,8 @@ public class UserInput implements KeyListener,MouseListener,MouseMotionListener{
 	private Point mousePoint;
 	private Dimension deltaMouseDragged;
 	
+	private boolean justClicked = false;
+	private MouseEvent lastClick;
 	
 	public UserInput(){
 		keys = new boolean[KEY_LIMIT];
@@ -23,14 +26,18 @@ public class UserInput implements KeyListener,MouseListener,MouseMotionListener{
 		clear();
 	}
 	
+	/**
+	 * Method used to clear all the parameters that should not exceed the frame. Called at the end of every update tick.
+	 */
 	public final void clear(){
 		deltaMouseDragged.width = 0;
 		deltaMouseDragged.height = 0;
+		justClicked = false;
 	}
 	
 	/**
 	 * Used to know if a key is pressed at the moment.
-	 * @param keyIndex the index of the key (same as KeyEvent.VK_)
+	 * @param keyIndex the index of the key (same as KeyEvent.VK_****)
 	 * @return if the key is pressed or not
 	 */
 	public boolean getKey(int keyIndex){
@@ -43,6 +50,22 @@ public class UserInput implements KeyListener,MouseListener,MouseMotionListener{
 	 */
 	public Dimension getMouseDeltaDragged(){
 		return deltaMouseDragged;
+	}
+	
+	/**
+	 * Method used to get if the mouse was clicked this frame or not.
+	 * @return if the mouse was clicked (pressed and released in quick succession) during this frame.
+	 */
+	public boolean clickedThisFrame(){
+		return justClicked;
+	}
+	
+	/**
+	 * Method used to get the information from the last click of the mouse.
+	 * @return the information of the last click of the mouse on the form of a MouseEvent
+	 */
+	public MouseEvent getLastClickInformation() {
+		return lastClick;
 	}
 	
 	@Override
@@ -82,8 +105,8 @@ public class UserInput implements KeyListener,MouseListener,MouseMotionListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		lastClick = e;
+		justClicked = true;
 	}
 
 	@Override

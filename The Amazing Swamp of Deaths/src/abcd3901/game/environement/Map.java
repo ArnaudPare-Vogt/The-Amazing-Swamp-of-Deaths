@@ -29,12 +29,15 @@ public class Map {
 	}
 
 	public void render(Renderer ren, Point coordinate, Dimension view) {
-		for (int i = 0; i < view.width / Tile.TILE_SIZE; i++) {
-			for (int j = 0; j < view.height / Tile.TILE_SIZE; j++) {
+		int xDecal = -(coordinate.x%Tile.TILE_SIZE);
+		int yDecal = -(coordinate.y%Tile.TILE_SIZE);
+		
+		for (int i = 0; i < view.width / Tile.TILE_SIZE +1; i++) {
+			for (int j = 0; j < view.height / Tile.TILE_SIZE +2; j++) {
 				Point p = findTileOnPoint(new Point(i * Tile.TILE_SIZE
 						+ coordinate.x, j * Tile.TILE_SIZE + coordinate.y));
 				if (p != null) {
-					ren.drawSprite(i * Tile.TILE_SIZE, j * Tile.TILE_SIZE,
+					ren.drawSprite(i * Tile.TILE_SIZE + xDecal, j * Tile.TILE_SIZE + yDecal,
 							terrainData[p.x + p.y * size.width]
 									.getSprite(getAdjacentTiles(p)));
 				}
@@ -55,7 +58,7 @@ public class Map {
 		return tiles;
 	}
 
-	private Tile getTile(Point p) {
+	public Tile getTile(Point p) {
 		if (p.x >= 0 && p.y >= 0 && p.x < size.width && p.y < size.height) {
 			return terrainData[p.x + p.y * size.width];
 		} else {

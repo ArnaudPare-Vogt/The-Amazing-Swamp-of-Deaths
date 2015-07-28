@@ -60,6 +60,7 @@ public class Component extends JPanel implements Runnable{
 		in = new UserInput();
 		parent.addKeyListener(in);
 		this.addMouseMotionListener(in);
+		this.addMouseListener(in);
 	}
 	
 	public void start(){

@@ -9,7 +9,8 @@ import abcd3901.utility.exception.ExceptionLog;
 
 public class SpriteSheet {
 	
-	public static SpriteSheet baseSheet = new SpriteSheet("/graphics/spriteSheet/SpriteSheet1.png", 128);;
+	public static SpriteSheet baseSheet = new SpriteSheet("/graphics/spriteSheet/SpriteSheet1.png", 128);
+	public static SpriteSheet mainRandomSprites = new SpriteSheet("/graphics/spriteSheet/OtherSprites.png", 128);
 	
 	private int size;
 	
