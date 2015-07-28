@@ -2,6 +2,7 @@ package abcd3901.main;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.UUID;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,6 +10,7 @@ import javax.swing.JPanel;
 import abcd3901.game.gamemode.GameMode;
 import abcd3901.game.gamemode.PlayMode;
 import abcd3901.graphics.Renderer;
+import abcd3901.io.UIInput;
 import abcd3901.io.UserInput;
 import abcd3901.utility.exception.ExceptionLog;
 
@@ -36,7 +38,8 @@ public class Component extends JPanel implements Runnable{
 	private Renderer renderer;
 	
 	//control stuff
-	UserInput in;
+	private UserInput in;
+	private UIInput uiIn;
 	
 	//tepm stuff
 	GameMode m = new PlayMode(800, 600);
@@ -56,11 +59,17 @@ public class Component extends JPanel implements Runnable{
 		gameLoop = new Thread(this,"TASOD_mainGameLoop");
 	}
 	
+	/**
+	 * Used by the constructor to initialize the input classes and add the listeners.
+	 * @param parent the parent frame of the <code>Component</code>
+	 */
 	private void initInput(JFrame parent){
 		in = new UserInput();
 		parent.addKeyListener(in);
 		this.addMouseMotionListener(in);
 		this.addMouseListener(in);
+		uiIn = new UIInput(parent.getContentPane());
+		parent.getContentPane().addComponentListener(uiIn);
 	}
 	
 	public void start(){
@@ -92,6 +101,13 @@ public class Component extends JPanel implements Runnable{
 	private void update(){
 		m.update(in);
 		in.clear();
+		if(uiIn.wasResizedThisFrame()){
+			size = uiIn.getActualSize();
+			this.setSize(size);
+			m.resize(size);
+			renderer.resize(size);
+		}
+		uiIn.reset();
 	}
 	
 	@Override

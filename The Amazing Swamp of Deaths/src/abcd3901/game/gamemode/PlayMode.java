@@ -59,4 +59,10 @@ public class PlayMode extends GameMode{
 		
 	}
 
+	@Override
+	public void resize(Dimension newSize) {
+		this.width = newSize.width;
+		this.height = newSize.height;
+	}
+
 }

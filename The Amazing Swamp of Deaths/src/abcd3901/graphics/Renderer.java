@@ -1,5 +1,6 @@
 package abcd3901.graphics;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -51,6 +52,18 @@ public class Renderer {
 	
 	public void drawString(String str,int x,int y){
 		roughGraphics.drawString(str, x, y);
+	}
+	
+	/**
+	 * Used to change the size of the renderer
+	 */
+	public void resize(Dimension newSize){
+		width = newSize.width;
+		height = newSize.height;
+		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		roughGraphics = (Graphics2D)image.getGraphics();
+		roughGraphics.setFont(boldLargeFont);
+		pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 	}
 	
 }
