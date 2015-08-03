@@ -8,6 +8,7 @@ public class WaterTile extends Tile{
 	
 	public WaterTile(TileType spriteHandeler, int depth) {
 		super(spriteHandeler);
+		this.depth = depth;
 	}
 
 	public int getDepth() {

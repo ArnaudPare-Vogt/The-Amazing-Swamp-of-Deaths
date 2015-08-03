@@ -2,10 +2,11 @@ package abcd3901.main;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.UUID;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import abcd3901.game.gamemode.GameMode;
 import abcd3901.game.gamemode.PlayMode;
@@ -16,54 +17,58 @@ import abcd3901.utility.exception.ExceptionLog;
 
 /**
  * The main class.
+ * 
  * @author Arnaud Paré-Vogt
  *
  */
-public class Component extends JPanel implements Runnable{
+public class Component extends JPanel implements Runnable {
 	public static final long serialVersionUID = 1l;
 
 	public static final String TITLE = "The Amazing Swamp of Deaths";
 	public static final String VERSION = "0.0.1-alpha";
-	
-	//thread stuff
-	private boolean isRunning = false;
+
+	// thread stuff
+	private boolean repaintFinished = false;
 	private Thread gameLoop;
 	private double fps = 60;
-	
-	//size stuff
-	private Dimension size = new Dimension(800,600);
+
+	// size stuff
+	private Dimension size = new Dimension(800, 600);
 	private int pixelSize = 1;
-	
-	//graphics stuff
+
+	// graphics stuff
 	private Renderer renderer;
-	
-	//control stuff
+
+	// control stuff
 	private UserInput in;
 	private UIInput uiIn;
-	
-	//tepm stuff
+
+	// tepm stuff
 	GameMode m = new PlayMode(800, 600);
-	
-	public Component(JFrame parent){
+
+	public Component(JFrame parent) {
 		this.setPreferredSize(size);
 		initGraphics();
 		initThread();
 		initInput(parent);
 	}
-	
-	private void initGraphics(){
-		renderer = new Renderer(size.width,size.height);
+
+	private void initGraphics() {
+		renderer = new Renderer(size.width, size.height);
 	}
-	
-	private void initThread(){
-		gameLoop = new Thread(this,"TASOD_mainGameLoop");
+
+	private void initThread() {
+		gameLoop = new Thread(this, "TASOD_mainGameLoop");
 	}
-	
+
 	/**
-	 * Used by the constructor to initialize the input classes and add the listeners.
-	 * @param parent the parent frame of the <code>Component</code>
+	 * Used by the constructor to initialize the input classes and add the
+	 * listeners.
+	 * 
+	 * @param parent
+	 *            the parent frame of the <code>Component</code>
 	 */
-	private void initInput(JFrame parent){
+	private void initInput(JFrame parent) {
 		in = new UserInput();
 		parent.addKeyListener(in);
 		this.addMouseMotionListener(in);
@@ -71,37 +76,48 @@ public class Component extends JPanel implements Runnable{
 		uiIn = new UIInput(parent.getContentPane());
 		parent.getContentPane().addComponentListener(uiIn);
 	}
-	
-	public void start(){
-		isRunning = true;
+
+	public void start() {
 		gameLoop.start();
 	}
-	
-	public void stop(){
-		isRunning = false;
+
+	public void stop() {
+		gameLoop.interrupt();
 	}
 
 	@Override
 	public void run() {
-		while(isRunning){
+		long lastTime = System.currentTimeMillis();
+		while (!Thread.currentThread().isInterrupted()) {
 			try {
-				Thread.sleep((int)(1000/fps));
-				//update
+				long remaningTime = (long) (1000 / fps)
+						- (System.currentTimeMillis() - lastTime);
+				Thread.sleep(remaningTime < 0 ? 0 : remaningTime);
+				lastTime = System.currentTimeMillis();
+				// update
 				update();
-				
-				//render
+				Thread.sleep(10);
+				// render
+				render();
+				repaintFinished = false;
 				repaint();
+				synchronized (this) {
+					while (!repaintFinished) {
+						this.wait();
+					}
+				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
+				break;
 			}
-			
+
 		}
 	}
-	
-	private void update(){
+
+	private void update() {
 		m.update(in);
 		in.clear();
-		if(uiIn.wasResizedThisFrame()){
+		if (uiIn.wasResizedThisFrame()) {
 			size = uiIn.getActualSize();
 			this.setSize(size);
 			m.resize(size);
@@ -109,27 +125,44 @@ public class Component extends JPanel implements Runnable{
 		}
 		uiIn.reset();
 	}
-	
-	@Override
-	public void paintComponent(Graphics g){
+
+	/**
+	 * Tells the current GameMode to render the level
+	 */
+	private void render() {
 		renderer.clearImage();
 		m.render(renderer);
-		g.drawImage(renderer.getImage(), 0, 0, size.width*pixelSize,size.height*pixelSize,null);
 	}
-	
-	public static void main(String[] args){
-		JFrame frame = new JFrame();
-		Component component = new Component(frame);
-		
-		frame.add(component);
-		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle(TITLE+"   "+VERSION);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		
-		component.start();
-		
-		ExceptionLog.showException(frame);
+
+	@Override
+	public void paintComponent(Graphics g) {
+		g.drawImage(renderer.getImage(), 0, 0, size.width * pixelSize,
+				size.height * pixelSize, null);
+		synchronized (this) {
+			repaintFinished = true;
+			this.notifyAll();
+		}
+	}
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = new JFrame();
+			Component component = new Component(frame);
+			
+			//Prevents a lot of flickering when resizing the frame.
+			Toolkit.getDefaultToolkit().setDynamicLayout(false);
+			component.setIgnoreRepaint(true);
+			
+			frame.add(component);
+			frame.pack();
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setTitle(TITLE + "   " + VERSION);
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
+
+			component.start();
+
+			ExceptionLog.showException(frame);
+		});
 	}
 }
