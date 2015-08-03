@@ -43,7 +43,11 @@ public class PlayMode extends GameMode{
 		//if we clicked, try to select the clicked tile
 		if(in.clickedThisFrame()){
 			MouseEvent info = in.getLastClickInformation();
-			lvl01.selectTile(info.getX()+x, info.getY()+y);
+			if(info.getButton() == MouseEvent.BUTTON1){
+				lvl01.selectTile(info.getX()+x, info.getY()+y);
+			}else if(info.getButton() == MouseEvent.BUTTON3){
+				lvl01.delelectTile();
+			}
 		}
 		//
 		

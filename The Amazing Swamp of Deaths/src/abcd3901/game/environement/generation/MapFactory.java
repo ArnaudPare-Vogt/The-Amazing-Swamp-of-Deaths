@@ -2,11 +2,13 @@ package abcd3901.game.environement.generation;
 
 import java.util.Random;
 
-import abcd3901.game.environement.Tile;
+import abcd3901.game.environement.TileType;
+import abcd3901.game.environement.tiles.Tile;
+import abcd3901.game.environement.tiles.WaterTile;
 
 public class MapFactory {
 	
-	public static final Tile[] baseTiles = {Tile.baseWater,Tile.baseGround};
+	public static final TileType[] baseTiles = {TileType.baseWater,TileType.baseGround};
 	
 	private Random rng;
 	
@@ -20,7 +22,12 @@ public class MapFactory {
 		for (int i = 0; i < data.length; i++) {
 			for (int j = 0; j < data[i].length; j++) {
 				int num = rng.nextInt(baseTiles.length);
-				data[i][j] = baseTiles[num];
+				TileType type = baseTiles[num];
+				if(type.isGround()){
+					data[i][j] = new Tile(baseTiles[num]);
+				}else{
+					data[i][j] = new WaterTile(baseTiles[num],rng.nextInt(9)+1);
+				}
 			}
 		}
 		

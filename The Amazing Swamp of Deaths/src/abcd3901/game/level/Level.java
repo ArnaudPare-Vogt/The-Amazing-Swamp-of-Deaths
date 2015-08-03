@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import abcd3901.game.environement.Map;
-import abcd3901.game.environement.Tile;
+import abcd3901.game.environement.TileType;
+import abcd3901.game.environement.tiles.Tile;
+import abcd3901.game.environement.tiles.WaterTile;
 import abcd3901.graphics.Renderer;
 import abcd3901.graphics.sprite.Sprite;
 
@@ -24,13 +26,20 @@ public class Level {
 	public Level(Dimension size) {
 		map = new Map(size);
 		tileSize = size;
-		pixelSize = new Dimension(tileSize.width*Tile.TILE_SIZE, tileSize.height*Tile.TILE_SIZE);
+		pixelSize = new Dimension(tileSize.width*TileType.TILE_SIZE, tileSize.height*TileType.TILE_SIZE);
 	}
 	
 	public void render(Renderer canvas, Point coordinates, Dimension viewport){
 		map.render(canvas, coordinates, viewport);
 		if(selectedTileCoords!=null){
-			canvas.drawSprite((selectedTileCoords.x * Tile.TILE_SIZE) - coordinates.x, (selectedTileCoords.y * Tile.TILE_SIZE) - coordinates.y, Sprite.baseSelector);
+			canvas.drawSprite((selectedTileCoords.x * TileType.TILE_SIZE) - coordinates.x, (selectedTileCoords.y * TileType.TILE_SIZE) - coordinates.y, Sprite.baseSelector);
+			Tile t = map.getTile(selectedTileCoords);
+			if(t!=null){
+				canvas.drawString(t.getSpriteHandeler().getName(), 10, 50);
+				if(t instanceof WaterTile){
+					canvas.drawString("deapth : " + ((WaterTile)t).getDepth(), 10, 75);
+				}
+			}
 		}
 	}
 	
@@ -42,8 +51,19 @@ public class Level {
 		return pixelSize;
 	}
 	
-	
+	/**
+	 * Selects a tile at the corresponding pixel coordinates.
+	 * @param pixelPosX the x position of the pixel
+	 * @param pixelPosY the y position of the pixel
+	 */
 	public void selectTile(int pixelPosX, int pixelPosY){
-		selectedTileCoords = new Point(pixelPosX/Tile.TILE_SIZE,pixelPosY/Tile.TILE_SIZE);
+		selectedTileCoords = new Point(pixelPosX/TileType.TILE_SIZE,pixelPosY/TileType.TILE_SIZE);
+	}
+	
+	/**
+	 * Deselects the tile
+	 */
+	public void delelectTile(){
+		selectedTileCoords = null;
 	}
 }

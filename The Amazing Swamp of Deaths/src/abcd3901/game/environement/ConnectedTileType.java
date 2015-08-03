@@ -4,14 +4,14 @@ import abcd3901.graphics.sprite.MetaSprite;
 import abcd3901.graphics.sprite.Sprite;
 import abcd3901.utility.math.ArrayUtil;
 
-public class ConnectedTile extends Tile{
+public class ConnectedTileType extends TileType{
 
-	public ConnectedTile(MetaSprite s) {
-		super(s);
+	public ConnectedTileType(MetaSprite s,String name,boolean isGround) {
+		super(s,name,isGround);
 	}
 	
 	@Override
-	public Sprite getSprite(Tile[] adjacentTiles) {
+	public Sprite getSprite(TileType[] adjacentTiles) {
 		boolean[] st = new boolean[adjacentTiles.length];
 		for (int i = 0; i < st.length; i++) {
 			st[i] = adjacentTiles[i].equals(this);

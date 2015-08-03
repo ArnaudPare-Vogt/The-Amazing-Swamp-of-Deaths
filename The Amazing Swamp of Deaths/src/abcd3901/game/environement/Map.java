@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import abcd3901.game.environement.generation.MapFactory;
+import abcd3901.game.environement.tiles.Tile;
 import abcd3901.graphics.Renderer;
 
 /**
@@ -29,50 +30,58 @@ public class Map {
 	}
 
 	public void render(Renderer ren, Point coordinate, Dimension view) {
-		int xDecal = -(coordinate.x%Tile.TILE_SIZE);
-		int yDecal = -(coordinate.y%Tile.TILE_SIZE);
+		int xDecal = -(coordinate.x%TileType.TILE_SIZE);
+		int yDecal = -(coordinate.y%TileType.TILE_SIZE);
 		
-		for (int i = 0; i < view.width / Tile.TILE_SIZE +1; i++) {
-			for (int j = 0; j < view.height / Tile.TILE_SIZE +2; j++) {
-				Point p = findTileOnPoint(new Point(i * Tile.TILE_SIZE
-						+ coordinate.x, j * Tile.TILE_SIZE + coordinate.y));
+		for (int i = 0; i < view.width / TileType.TILE_SIZE +1; i++) {
+			for (int j = 0; j < view.height / TileType.TILE_SIZE +2; j++) {
+				Point p = findTileOnPoint(new Point(i * TileType.TILE_SIZE
+						+ coordinate.x, j * TileType.TILE_SIZE + coordinate.y));
 				if (p != null) {
-					ren.drawSprite(i * Tile.TILE_SIZE + xDecal, j * Tile.TILE_SIZE + yDecal,
+					ren.drawSprite(i * TileType.TILE_SIZE + xDecal, j * TileType.TILE_SIZE + yDecal,
 							terrainData[p.x + p.y * size.width]
-									.getSprite(getAdjacentTiles(p)));
+									.getSpriteHandeler().getSprite(getAdjacentTiles(p)));
 				}
 			}
 		}
 	}
 
-	private Tile[] getAdjacentTiles(Point p) {
-		Tile[] tiles = new Tile[8];
-		tiles[0] = getTile(new Point(p.x - 1, p.y - 1));
-		tiles[1] = getTile(new Point(p.x, p.y - 1));
-		tiles[2] = getTile(new Point(p.x + 1, p.y - 1));
-		tiles[3] = getTile(new Point(p.x - 1, p.y));
-		tiles[4] = getTile(new Point(p.x + 1, p.y));
-		tiles[5] = getTile(new Point(p.x - 1, p.y + 1));
-		tiles[6] = getTile(new Point(p.x, p.y + 1));
-		tiles[7] = getTile(new Point(p.x + 1, p.y + 1));
+	private TileType[] getAdjacentTiles(Point p) {
+		TileType[] tiles = new TileType[8];
+		tiles[0] = getTileHandeler(new Point(p.x - 1, p.y - 1));
+		tiles[1] = getTileHandeler(new Point(p.x, p.y - 1));
+		tiles[2] = getTileHandeler(new Point(p.x + 1, p.y - 1));
+		tiles[3] = getTileHandeler(new Point(p.x - 1, p.y));
+		tiles[4] = getTileHandeler(new Point(p.x + 1, p.y));
+		tiles[5] = getTileHandeler(new Point(p.x - 1, p.y + 1));
+		tiles[6] = getTileHandeler(new Point(p.x, p.y + 1));
+		tiles[7] = getTileHandeler(new Point(p.x + 1, p.y + 1));
 		return tiles;
 	}
 
-	public Tile getTile(Point p) {
+	public TileType getTileHandeler(Point p) {
+		if (p.x >= 0 && p.y >= 0 && p.x < size.width && p.y < size.height) {
+			return terrainData[p.x + p.y * size.width].getSpriteHandeler();
+		} else {
+			return TileType.baseWater;
+		}
+	}
+	
+	public Tile getTile(Point p){
 		if (p.x >= 0 && p.y >= 0 && p.x < size.width && p.y < size.height) {
 			return terrainData[p.x + p.y * size.width];
 		} else {
-			return Tile.baseWater;
+			return null;
 		}
 	}
 
 	/**
 	 * Gives a point representing the x and y coordinates of the tile located under the given point.
-	 * @param point the point where to look for for the tile
+	 * @param point the point where to look for for the tile (in pixels)
 	 * @return the point representing the coordinates of the found tile
 	 */
 	public Point findTileOnPoint(Point point) {
-		Point p = new Point(point.x / Tile.TILE_SIZE, point.y / Tile.TILE_SIZE);
+		Point p = new Point(point.x / TileType.TILE_SIZE, point.y / TileType.TILE_SIZE);
 		if (point.x >= 0 && point.y >= 0 && p.x < size.width && p.y < size.height) {
 			return p;
 		} else
