@@ -68,6 +68,14 @@ public class UserInput implements KeyListener,MouseListener,MouseMotionListener{
 		return lastClick;
 	}
 	
+	/**
+	 * Used to get the current mouse position on the screen, or the one at which it left it.
+	 * @return the current mouse position on the screen
+	 */
+	public Point getMousePoint() {
+		return mousePoint;
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {}
 
