@@ -4,11 +4,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import abcd3901.graphics.Renderable;
 import abcd3901.graphics.Renderer;
+import abcd3901.graphics.SpriteSheet;
 import abcd3901.graphics.UI.Button;
 import abcd3901.graphics.UI.Clickable;
 import abcd3901.graphics.UI.Label;
@@ -23,9 +29,17 @@ public class MenuMode extends GameMode{
 	private List<Renderable> guiItems;
 	private List<Clickable> guiInteractives;
 	
+	private BufferedImage bgImage;
+	public static final String bgImagePath = "/graphics/images/titleScreenImage.png";
+	
 	public MenuMode(Dimension currentSize, GameModeContainer modeChanger){
 		this.currentSize = currentSize;
 		this.modeChanger = modeChanger;
+		try{
+			bgImage = ImageIO.read(SpriteSheet.class.getResource(bgImagePath));
+		}catch(IOException|IllegalArgumentException exe){
+			System.out.println("Image reading failed!");
+		}
 		initGUI();
 	}
 	
@@ -50,7 +64,11 @@ public class MenuMode extends GameMode{
 	
 	@Override
 	public void render(Renderer ren) {
-		ren.drawRectangle(0, 0, currentSize.width, currentSize.height, 0xff00ffcc);
+		if(bgImage!=null){
+			ren.getRoughGraphics().drawImage(bgImage, 0, 0, currentSize.width, currentSize.height, null);
+		}else{
+			ren.drawRectangle(0, 0, currentSize.width, currentSize.height, 0xff00ffcc);
+		}
 		for (Renderable renderable : guiItems) {
 			renderable.render(ren);
 		}
