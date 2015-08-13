@@ -29,9 +29,9 @@ public class PlayMode extends GameMode {
 	private List<Renderable> items;
 	private List<Clickable> clickables;
 
-	public PlayMode(int width, int height) {
-		this.height = height;
-		this.width = width;
+	public PlayMode(Dimension d) {
+		this.height = d.height;
+		this.width = d.width;
 		x = 0;
 		y = 0;
 
@@ -116,6 +116,12 @@ public class PlayMode extends GameMode {
 	public void resize(Dimension newSize) {
 		this.width = newSize.width;
 		this.height = newSize.height;
+	}
+	
+	@Override
+	public void activate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

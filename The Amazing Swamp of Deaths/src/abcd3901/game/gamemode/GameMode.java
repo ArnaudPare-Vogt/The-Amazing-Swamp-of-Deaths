@@ -16,4 +16,8 @@ public abstract class GameMode {
 	 */
 	public abstract void resize(Dimension newSize);
 	
+	/**
+	 * Called when a game mode is shown to the user
+	 */
+	public abstract void activate();
 }

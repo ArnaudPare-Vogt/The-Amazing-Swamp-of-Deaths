@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import abcd3901.game.gamemode.GameMode;
+import abcd3901.game.gamemode.GameModeContainer;
+import abcd3901.game.gamemode.MenuMode;
 import abcd3901.game.gamemode.PlayMode;
 import abcd3901.graphics.Renderer;
 import abcd3901.io.UIInput;
@@ -21,7 +23,7 @@ import abcd3901.utility.exception.ExceptionLog;
  * @author Arnaud Paré-Vogt
  *
  */
-public class Component extends JPanel implements Runnable {
+public class Component extends JPanel implements Runnable,GameModeContainer {
 	public static final long serialVersionUID = 1l;
 
 	public static final String TITLE = "The Amazing Swamp of Deaths";
@@ -43,14 +45,16 @@ public class Component extends JPanel implements Runnable {
 	private UserInput in;
 	private UIInput uiIn;
 
-	// tepm stuff
-	GameMode m = new PlayMode(800, 600);
-
+	//Game mode stuff
+	GameMode currentMode;
+	GameMode[] modes;
+	
 	public Component(JFrame parent) {
 		this.setPreferredSize(size);
 		initGraphics();
 		initThread();
 		initInput(parent);
+		initModes();
 	}
 
 	private void initGraphics() {
@@ -75,6 +79,13 @@ public class Component extends JPanel implements Runnable {
 		this.addMouseListener(in);
 		uiIn = new UIInput(parent.getContentPane());
 		parent.getContentPane().addComponentListener(uiIn);
+	}
+	
+	private void initModes(){
+		modes = new GameMode[2];
+		modes[0] = new MenuMode(getSize(), this);
+		modes[1] = new PlayMode(getSize());
+		changeMode(0);
 	}
 
 	public void start() {
@@ -115,12 +126,12 @@ public class Component extends JPanel implements Runnable {
 	}
 
 	private void update() {
-		m.update(in);
+		currentMode.update(in);
 		in.clear();
 		if (uiIn.wasResizedThisFrame()) {
 			size = uiIn.getActualSize();
 			this.setSize(size);
-			m.resize(size);
+			currentMode.resize(size);
 			renderer.resize(size);
 		}
 		uiIn.reset();
@@ -131,7 +142,7 @@ public class Component extends JPanel implements Runnable {
 	 */
 	private void render() {
 		renderer.clearImage();
-		m.render(renderer);
+		currentMode.render(renderer);
 	}
 
 	@Override
@@ -164,5 +175,12 @@ public class Component extends JPanel implements Runnable {
 
 			ExceptionLog.showException(frame);
 		});
+	}
+
+	@Override
+	public void changeMode(int modeId) {
+		currentMode = modes[modeId];
+		currentMode.resize(getSize());
+		currentMode.activate();
 	}
 }
