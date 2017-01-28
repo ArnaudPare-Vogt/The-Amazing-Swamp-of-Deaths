@@ -2,18 +2,23 @@ package src.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game extends ApplicationAdapter {
+	
+	AssetManager assetManager = new AssetManager();
 	SpriteBatch batch;
 	Texture img;
 	
 	@Override
 	public void create () {
+		assetManager.load("badlogic.jpg", Texture.class);
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		while(!assetManager.update());
+		img = assetManager.get("badlogic.jpg");
 	}
 
 	@Override
