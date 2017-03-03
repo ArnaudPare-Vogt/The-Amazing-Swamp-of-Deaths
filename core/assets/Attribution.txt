@@ -1,0 +1,5 @@
+FileName, Author(s), Link, mods
+
+
+Tiny16-ExpandedFemaleSprites.png, capbros, Lanea Zimmerman, http://opengameart.org/content/tiny-16-expanded-character-sprites, edited to remove background 
+Tiny16-ExpandedFemaleSprites.png, capbros, Lanea Zimmerman, http://opengameart.org/content/tiny-16-expanded-character-sprites, edited to remove background
