@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 
 import src.game.characters.Being;
+import src.game.characters.Core;
 import src.game.graphics.Renderer;
 
 public class Game extends ApplicationAdapter {
@@ -28,12 +29,21 @@ public class Game extends ApplicationAdapter {
 		assetManager.load("badlogic.jpg", Texture.class);
 		assetManager.load("Tiny16-ExpandedFemaleSprites.png", Texture.class);
 		assetManager.load("Tiny16-ExpandedMaleSprites.png", Texture.class);
+		assetManager.load("Objects.png", Texture.class);
+		
 		ren = new Renderer(new SpriteBatch());
 		while(!assetManager.update());
 		img = assetManager.get("Tiny16-ExpandedFemaleSprites.png");
 		reg = new TextureRegion(img, 0, 0, 16, 16);
 		
-		chars.add(new Being(new Vector3(1,1,0), reg));
+		chars.add(new Being(new Vector3(1,4,0), reg));
+		chars.add(new Core(new Vector3(16,16,0), new TextureRegion((Texture) assetManager.get("Objects.png"), 16,0,16,16)));
+		
+		initRender();
+	}
+	
+	private void initRender() {
+		//Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
 	}
 
 	@Override
@@ -44,6 +54,8 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		ren.spriteBatch.begin();
+		//lol hack
+		//Gdx.gl.glDepthMask(true);
 		for (Entity ent : chars) {
 			ent.render(ren);
 		}
