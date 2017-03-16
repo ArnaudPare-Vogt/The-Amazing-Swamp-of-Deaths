@@ -16,7 +16,7 @@ uniform sampler2D textureSampler;
 uniform sampler2D normalMapSampler;
 
 vec4 specColor = vec4(1,1,1,1);
-int specStrength = 5;
+int specStrength = 10;
 
 vec3 lerp(vec4 a, vec4 b, float s)
 {
@@ -25,7 +25,7 @@ vec3 lerp(vec4 a, vec4 b, float s)
 
 void main(){
 	//normal mapping
-		vec3 Normal_tangentspace = vec3(0,0,1);/*normalize((2.0* texture(normalMapSampler, UV).rgb) -1)*/;
+		vec3 Normal_tangentspace = normalize((2.0* texture(normalMapSampler, UV).rgb) -1);
 
 	//end normal mapping
 
@@ -43,6 +43,6 @@ void main(){
 	vec4 ambient = vec4(0.3,0.3,0.3, 1) * diffuse;
 
 	color = ambient
-		 + diffuse * lightColor * exposure;
+		 + diffuse * lightColor * exposure
 		 + specColor * lightColor * pow(reflectionExposure, specStrength);
 }

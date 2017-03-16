@@ -94,6 +94,7 @@ void Engine::drawScene(std::vector<GameObjects::GameObject*> & sceneObjects, GLu
 				GLuint LightPosition_Handle = glGetUniformLocation(programID, "LightPosition_worldspace");
 				GLuint textureSamplerHandle = glGetUniformLocation(programID, "textureSampler");
 				GLuint normalMapTextureSamplerHandle = glGetUniformLocation(programID, "normalMapSampler");
+				GLuint cameraPosition_Handle = glGetUniformLocation(programID, "CameraPosition_worldspace");
 
 				glm::mat4 Model = object->MakeModelMatrix();
 				glm::mat4 MVP = Projection * View * Model;
@@ -108,6 +109,7 @@ void Engine::drawScene(std::vector<GameObjects::GameObject*> & sceneObjects, GLu
 
 				glUniform3fv(LightColor_Handle, 1, &this->sun->color[0]);
 				glUniform3fv(LightPosition_Handle, 1, &this->sun->position[0]);
+				glUniform3fv(cameraPosition_Handle, 1, &this->mainCamera->position[0]);
 				mobject->Draw();
 
 			}

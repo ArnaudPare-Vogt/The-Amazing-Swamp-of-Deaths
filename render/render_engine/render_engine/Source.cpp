@@ -110,7 +110,7 @@ int main() {
 			glm::vec3(1, 1, 1),
 			m2
 		);
-		tile.deltaRotation = glm::vec4(0,1,0,0.005f);
+		//tile.deltaRotation = glm::vec4(0,1,0,0.005f);
 		engine->sceneObjects.push_back(&tile);
 
 		GameObjects::Light sun(
