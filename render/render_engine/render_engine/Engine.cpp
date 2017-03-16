@@ -60,6 +60,7 @@ int Engine::initWindow(GLFWwindow*& window) {
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	return 0;
 }
 
 void Engine::tickScene(std::vector<GameObjects::GameObject*> & sceneObjects) {
