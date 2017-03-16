@@ -48,7 +48,7 @@ Light::Light(glm::vec3 _position, glm::vec3 _color)
 #pragma region Camera
 Camera::Camera(glm::vec3 _position, glm::vec4 _rotation)
 	:GameObject(_position, rotation, glm::vec3(1,1,1)) {
-
+	this->speed = 3.0f;
 }
 
 glm::vec3 Camera::direction() {

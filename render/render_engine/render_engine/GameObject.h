@@ -56,6 +56,7 @@ namespace GameObjects {
 	class Camera : public GameObject{
 	public:
 		float fov;
+		float speed;
 		Camera(glm::vec3 _position, glm::vec4 _rotation);
 		~Camera() {}
 		glm::vec3 direction();
