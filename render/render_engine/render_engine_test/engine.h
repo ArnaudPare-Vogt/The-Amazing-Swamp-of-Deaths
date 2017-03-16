@@ -33,7 +33,7 @@ namespace render_engine {
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-			window = glfwCreateWindow(engine::WINDOW_WIDTH, engine::WINDOW_HEIGHT, 
+			window = glfwCreateWindow(engine::WINDOW_WIDTH, engine::WINDOW_HEIGHT,
 				engine::WINDOW_TITLE.c_str(), glfwGetPrimaryMonitor(), nullptr);
 			if (nullptr == window) {
 				glfwTerminate();
@@ -49,14 +49,23 @@ namespace render_engine {
 		}
 
 	public:
-		enum class ERRORS: int {
+		enum class ERRORS : int {
 			SUCCESS = 0,
 			GLFW_INIT_FAILELD = -1,
 			GLFW_CREATE_WINDOW_FAILED = -2,
 			GLEW_INIT_FAILED = -3
 		};
 
+		/*
+		* @description
+		*		Initializes the render engine and its window.
+		*
+		* @return:
+		*		An integer representing the status.  refer to
+		*		engine::ERRORS for meanings.
+		*/
 		int Init() {
+			this->initialized = false;
 			int initglfwResult = initglfw();
 			if ((int)ERRORS::SUCCESS != initglfwResult) {
 				return initglfwResult;
@@ -66,7 +75,45 @@ namespace render_engine {
 			if (setupWindowResult < 0) {
 				return setupWindowResult;
 			}
+			glfwSetInputMode(this->window, GLFW_STICKY_KEYS, GL_TRUE);
+			this->initialized = true;
+			return (int)ERRORS::SUCCESS;
+		}
 
+		/*
+		* @description
+		*		Main loop of the engine. this method will not return untill
+		*		the main render loop has completed or has been interrupted.
+		*
+		*	@return
+		*		An integer representing the satus.  refer to
+		*		engine::ERRORS for meanings.
+		*/
+		int MainLoop() {
+			if (!this->initialized) {
+				int initResult = this->Init();
+				if ((int)ERRORS::SUCCESS != initResult) {
+					return initResult;
+				}
+			}
+			do {
+
+				glfwSwapBuffers(window);
+				glfwPollEvents();
+			} while (this->EngineShouldClose());
+
+			return (int)ERRORS::SUCCESS;
+		}
+
+		/*
+		* @description
+		*		Whether or not the engine should close.
+		*
+		* @return
+		*		Wheter or not the engine should close.
+		*/
+		bool EngineShouldClose() {
+			return (GLFW_PRESS != glfwGetKey(this->window, GLFW_KEY_ESCAPE) && glfwWindowShouldClose(window) == 0);
 		}
 
 	};
