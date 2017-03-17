@@ -106,16 +106,16 @@ int main() {
 #pragma region objects
 		GameObjects::MeshObject tile(
 			glm::vec3(0, 0, -5),
-			glm::vec4(0, 1, 0, 0.75f),
+			glm::vec4(0, 1, 0, 0.f),
 			glm::vec3(1, 1, 1),
 			m2
 		);
-		//tile.deltaRotation = glm::vec4(0,1,0,0.005f);
+		tile.deltaRotation = glm::vec4(0,1,0,0.005f);
 		engine->sceneObjects.push_back(&tile);
 
 		GameObjects::Light sun(
-			glm::vec3(-10, 10, 0),
-			glm::vec3(1, 1, 1)
+			glm::vec3(0, 0, 0),
+			glm::vec3(1, 1, 0.5f)
 		);
 		engine->sceneObjects.push_back(&sun);
 		engine->lights.push_back(&sun);

@@ -32,10 +32,11 @@ void main(){
 
 	//diffuse and specular lighting
 		vec3 vertexPosition_camspace = (ViewMatrix * ModelMatrix * vec4(vertexPosition_modelspace, 1)).xyz;
-		vec3 EyeDirection_camspace = CameraPosition_worldspace - vertexPosition_camspace;
+		vec3 EyeDirection_camspace = normalize(vertexPosition_camspace);
 	
 		vec3 lightPosition_camspace = (ViewMatrix * vec4(LightPosition_worldspace,1)).xyz;
-		vec3 LightDirection_camspace = lightPosition_camspace + EyeDirection_camspace;
+		vec3 LightDirection_camspace = normalize(-(lightPosition_camspace - vertexPosition_camspace));
+									//lightPosition_camspace + EyeDirection_camspace;
 
 	//end diffuse and specular lighting
 	
@@ -49,7 +50,7 @@ void main(){
 			vertexNormal_camspace
 		));
 		LightDirection_tangentspace = TBN * LightDirection_camspace;
-		EyeDirection_tangentspace = TBN * EyeDirection_camspace;
+		EyeDirection_tangentspace = normalize(TBN * EyeDirection_camspace);
 
 	//end normal mapping
 	

@@ -155,6 +155,9 @@ void Engine::start() {
 			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 				this->mainCamera->position += glm::vec3(0, 1, 0) * this->deltaTime * this->mainCamera->speed;
 			}
+			if (nullptr != this->sun) {
+				this->sun->position = this->mainCamera->position;
+			}
 		}
 		
 
