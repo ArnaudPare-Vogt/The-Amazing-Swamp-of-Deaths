@@ -2,9 +2,9 @@ package tasod.graphics;
 
 public class RenderEngine {
 	/**
-	 * Name of the library that backs RenderEngine
+	 * Name of the system dependencies that need to be satisfied in order to run
 	 */
-	public static final String LIB_NAME = "render_engine";
+	public static final String[] DEPENDENCIES = {"freeglut", "glew32", "glfw3", "render_engine"};
 	
 	private RenderEngine(){
 	}
@@ -13,13 +13,7 @@ public class RenderEngine {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
+	public native void method();
 	
 	
 	private static RenderEngine renderEngine = null; 
@@ -30,7 +24,9 @@ public class RenderEngine {
 	 */
 	public static RenderEngine get(){
 		if(renderEngine == null){
-			System.loadLibrary(LIB_NAME);
+			for(String libName : DEPENDENCIES){
+				System.loadLibrary(libName);
+			}
 			renderEngine = new RenderEngine();
 		}
 		return renderEngine;
