@@ -38,39 +38,7 @@ int ShaderManager::CreateShaderProgram(GLuint& OUT_programid, const char* vertex
 	std::string FragmentShaderCode;
 	GLint result = GL_FALSE;
 	int infologlength;
-	/*
-#pragma region vertex
-	std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
-	if (VertexShaderStream.is_open()) {
-		std::string line = "";
-		while (getline(VertexShaderStream, line)) {
-			VertexShaderCode += "\n" + line;
-		}
-		VertexShaderStream.close();
-	}
-	else {
-		printf("[load vert shader] impossible to open %s.", vertex_file_path);
-		getchar();
-		return 0;
-	}
-#pragma endregion vertex
-
-#pragma region fragment
-	std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
-	if (FragmentShaderStream.is_open()) {
-		std::string line = "";
-		while (getline(FragmentShaderStream, line)) {
-			FragmentShaderCode += "\n" + line;
-		}
-		FragmentShaderStream.close();
-	}
-	else {
-		printf("[load frag shader] impossible to open %s.", fragment_file_path);
-		getchar();
-		return 0;
-	}
-#pragma endregion fragment
-	*/
+	
 #pragma region compile
 	//vertex
 	printf("compiling shader: %s\n", vertex_file_path);

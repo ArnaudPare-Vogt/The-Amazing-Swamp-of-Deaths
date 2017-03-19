@@ -16,7 +16,7 @@ uniform sampler2D textureSampler;
 uniform sampler2D normalMapSampler;
 
 vec4 specColor = vec4(1,1,1,1);
-int specStrength = 5;
+int specStrength = 10;
 
 vec3 lerp(vec4 a, vec4 b, float s)
 {
@@ -25,15 +25,15 @@ vec3 lerp(vec4 a, vec4 b, float s)
 
 void main(){
 	//normal mapping
-		vec3 Normal_tangentspace = vec3(0,0,1);/*normalize((2.0* texture(normalMapSampler, UV).rgb) -1)*/;
+		vec3 Normal_tangentspace = normalize((texture(normalMapSampler, UV).rgb)*2.0 -1.0);
 
 	//end normal mapping
 
 	//diffuse and specular
-		vec3 nNormal_camspace = normalize(Normal_tangentspace);
+		vec3 nNormal_camspace = normalize(vec3(-Normal_tangentspace.x, -Normal_tangentspace.y, Normal_tangentspace.z));
 		vec3 Lightdir_camspace = normalize(LightDirection_tangentspace);
 		vec3 EyeDir = normalize(EyeDirection_tangentspace);
-		vec3 reflectLight_Eye = reflect(-Lightdir_camspace, nNormal_camspace);
+		vec3 reflectLight_Eye = -reflect(Lightdir_camspace, nNormal_camspace);
 	//end diffuse and specular
 
 	float reflectionExposure = clamp( dot(EyeDir,reflectLight_Eye), 0, 1 );
@@ -43,6 +43,6 @@ void main(){
 	vec4 ambient = vec4(0.3,0.3,0.3, 1) * diffuse;
 
 	color = ambient
-		 + diffuse * lightColor * exposure;
+		 + diffuse * lightColor * reflectionExposure
 		 + specColor * lightColor * pow(reflectionExposure, specStrength);
 }
