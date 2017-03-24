@@ -12,6 +12,5 @@ public class Main {
 		System.out.println("allo from java");
 		
 		RenderEngine re = RenderEngine.get();
-		re.method();
 	}
 }
