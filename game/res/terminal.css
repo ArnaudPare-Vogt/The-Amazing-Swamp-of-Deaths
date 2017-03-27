@@ -1,0 +1,29 @@
+#background {
+	-fx-background-color: #110000;
+}
+#content{
+	-fx-text-fill: #ffffff;
+	-fx-highlight-fill: #00ff00;
+	-fx-highlight-text-fill: #000000;
+	-fx-text-box-border: transparent;
+	-fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+#content .content {
+	-fx-background-color: #110000;
+	-fx-background-insets: 0;
+	-fx-padding: 0px;
+    -fx-background-radius: 0 ;
+}
+
+#command {
+	-fx-text-fill: #ffffff;
+	-fx-highlight-fill: #00ff00;
+	-fx-highlight-text-fill: #000000;
+	-fx-background-color: #110000;
+}
+
+#prompt {
+	-fx-text-fill: #ffffff;
+}

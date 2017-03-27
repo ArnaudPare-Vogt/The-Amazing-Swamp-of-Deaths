@@ -1,0 +1,17 @@
+body {
+	background-color: #110000;
+	color: #ffffff;
+	font-family: courier;
+}
+textarea
+{
+	background-color: inherit;
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	
+	border: none;
+	outline: none;
+	
+	cursor: box;
+}
